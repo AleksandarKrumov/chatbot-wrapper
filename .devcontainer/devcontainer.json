@@ -1,0 +1,49 @@
+{
+    "name": "Python UV Development",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "devcontainer",
+    "workspaceFolder": "/workspace",
+    "shutdownAction": "stopCompose",
+    "postCreateCommand": "make setup",
+    "postStartCommand": "make update-deps",
+    "features": {
+      "ghcr.io/devcontainers/features/git:1": {},
+      "ghcr.io/devcontainers/features/github-cli:1": {}
+    },
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "ms-python.python",
+          "ms-python.black-formatter",
+          "ms-python.isort",
+          "charliermarsh.ruff",
+          "ms-python.mypy-type-checker",
+          "ms-toolsai.jupyter",
+          "streetsidesoftware.code-spell-checker",
+          "ms-vscode.makefile-tools"
+        ],
+        "settings": {
+          "python.defaultInterpreterPath": "/workspace/.venv/bin/python",
+          "python.terminal.activateEnvironment": false,
+          "python.formatting.provider": "black",
+          "python.linting.enabled": true,
+          "python.linting.ruffEnabled": true,
+          "python.testing.pytestEnabled": true,
+          "python.testing.pytestArgs": ["tests"],
+          "files.exclude": {
+            "**/__pycache__": true,
+            "**/.pytest_cache": true,
+            "**/.*_cache": true
+          }
+        }
+      }
+    },
+    "forwardPorts": [8000, 8080, 5000],
+    "remoteUser": "devuser",
+    "containerEnv": {
+      "PYTHONPATH": "/workspace/src",
+      "VIRTUAL_ENV": "/workspace/.venv",
+      "PATH": "/workspace/.venv/bin:${PATH}"
+    }
+  }
+  
