@@ -20,8 +20,6 @@ services:
       - VIRTUAL_ENV=/workspace/.venv
       - PATH=/home/devuser/.cargo/bin:/workspace/.venv/bin:/usr/local/bin:/usr/bin:/bin
     command: sleep infinity
-    security_opt:
-      - no-new-privileges:true
     tmpfs:
       - /tmp:rw,noexec,nosuid,size=512m
       - /var/tmp:rw,noexec,nosuid,size=512m

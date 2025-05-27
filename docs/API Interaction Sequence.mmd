@@ -1,3 +1,6 @@
+---
+id: 63ece3e0-2f4a-4629-ab3f-e3a16f6e57ab
+---
 sequenceDiagram
     participant RE as Research Engine
     participant PG as Prompt Generator
@@ -9,7 +12,6 @@ sequenceDiagram
 
     RE->>PG: Generate research prompt
     PG->>PG: Optimize for current model
-    PG-->>RE: Optimized prompt
 
     RE->>AC: Send API request
     AC->>AC: Add authentication headers

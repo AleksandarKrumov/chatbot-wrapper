@@ -10,8 +10,20 @@
     "vscode": {
       "settings": {
         "python.defaultInterpreterPath": "/workspace/.venv/bin/python",
-        "terminal.integrated.defaultProfile.linux": "zsh"
-      }
+        "terminal.integrated.defaultProfile.linux": "zsh",
+         "[python]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "charliermarsh.ruff"
+        },
+        "ruff.nativeServer": "on"
+      },
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "bierner.markdown-mermaid",
+        "charliermarsh.ruff",
+        "meta.pyrefly",
+        "MermaidChart.vscode-mermaid-chart"
+      ]
     }
   }
 }

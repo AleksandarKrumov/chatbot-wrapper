@@ -16,6 +16,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
         zsh \
         fish \
         vim \
+        openssh-client \
         nano \
         htop \
         procps \
