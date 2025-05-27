@@ -1,0 +1,61 @@
+classDiagram
+    class ResearchCLI {
+        +main(args: List[str])
+        +parse_arguments() ArgumentParser
+        +setup_logging() None
+        +run_research(query: str, options: Dict) None
+    }
+
+    class ResearchEngine {
+        -api_client: APIClient
+        -cache_manager: CacheManager
+        -prompt_generator: PromptGenerator
+        +execute_research(query: str, depth: str) ResearchResult
+        +generate_follow_ups(summary: str) List[str]
+        +consolidate_findings(results: List) str
+    }
+
+    class APIClient {
+        -api_key: str
+        -base_url: str
+        -session: requests.Session
+        +send_query(prompt: str, model: str) APIResponse
+        +handle_rate_limit() None
+        +track_usage() UsageStats
+    }
+
+    class CacheManager {
+        -cache_dir: Path
+        -expiry_hours: int
+        +get_cached_result(query_hash: str) Optional[CachedResult]
+        +store_result(query_hash: str, result: Any) None
+        +clear_expired() None
+    }
+
+    class PromptGenerator {
+        +generate_research_prompt(query: str, depth: str) str
+        +generate_followup_prompt(summary: str) str
+        +optimize_for_model(prompt: str, model: str) str
+    }
+
+    class OutputFormatter {
+        +format_markdown(result: ResearchResult) str
+        +format_json(result: ResearchResult) str
+        +format_text(result: ResearchResult) str
+        +export_to_file(content: str, filepath: Path) None
+    }
+
+    class ConfigManager {
+        -config_file: Path
+        +load_config() Dict
+        +validate_api_key() bool
+        +get_default_settings() Dict
+    }
+
+    ResearchCLI --> ResearchEngine
+    ResearchCLI --> ConfigManager
+    ResearchCLI --> OutputFormatter
+    ResearchEngine --> APIClient
+    ResearchEngine --> CacheManager
+    ResearchEngine --> PromptGenerator
+    APIClient --> ConfigManager

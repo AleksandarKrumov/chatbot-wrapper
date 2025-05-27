@@ -1,0 +1,31 @@
+architecture-beta
+    group cli[CLI Interface]
+    group core[Core Application]
+    group api[External APIs]
+    group storage[Data Storage]
+
+    service terminal[Terminal UI] in cli
+    service config[Config Manager] in cli
+    service output[Output Formatter] in cli
+
+    service research[Research Engine] in core
+    service cache[Cache Manager] in core
+    service prompt[Prompt Generator] in core
+    service parser[Response Parser] in core
+
+    service perplexity[Perplexity API] in api
+    service openrouter[OpenRouter API] in api
+
+    service fileCache[File Cache] in storage
+    service logs[Log Files] in storage
+    service results[Result Export] in storage
+
+    terminal:R --> L:research
+    config:R --> L:research
+    research:R --> L:perplexity
+    research:R --> L:openrouter
+    research:B --> T:cache
+    cache:R --> L:fileCache
+    parser:R --> L:output
+    output:B --> T:results
+    research:B --> T:logs

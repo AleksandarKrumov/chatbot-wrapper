@@ -1,0 +1,41 @@
+sequenceDiagram
+    participant RE as Research Engine
+    participant PG as Prompt Generator
+    participant AC as API Client
+    participant PA as Perplexity API
+    participant CM as Cache Manager
+
+    Note over RE, CM: Single Research Iteration
+
+    RE->>PG: Generate research prompt
+    PG->>PG: Optimize for current model
+    PG-->>RE: Optimized prompt
+
+    RE->>AC: Send API request
+    AC->>AC: Add authentication headers
+    AC->>AC: Implement rate limiting
+    
+    AC->>PA: POST /chat/completions
+    activate PA
+    
+    alt Success Response
+        PA-->>AC: 200 OK + Research Results
+        AC->>AC: Parse response
+        AC->>AC: Update usage tracking
+        AC-->>RE: Formatted results
+        
+        RE->>CM: Cache results
+        CM-->>RE: Cached successfully
+        
+    else Rate Limited
+        PA-->>AC: 429 Too Many Requests
+        AC->>AC: Exponential backoff
+        AC->>PA: Retry request
+        
+    else API Error
+        PA-->>AC: 4xx/5xx Error
+        deactivate PA
+        AC->>AC: Log error details
+        AC-->>RE: Error response
+        RE->>RE: Handle gracefully
+    end

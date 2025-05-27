@@ -1,0 +1,40 @@
+flowchart TD
+    A[Start: User Query] --> B{Parse CLI Arguments}
+    B --> C[Load Configuration]
+    C --> D{Validate API Key}
+    D -->|Invalid| E[Error: Invalid API Key]
+    D -->|Valid| F[Initialize Research Engine]
+    
+    F --> G{Check Cache}
+    G -->|Hit| H[Load Cached Results]
+    G -->|Miss| I[Generate Research Plan]
+    
+    I --> J[Break Down Query]
+    J --> K[Generate Initial Prompts]
+    K --> L[Execute API Calls]
+    
+    L --> M{API Success?}
+    M -->|No| N[Retry with Backoff]
+    N --> M
+    M -->|Yes| O[Parse API Response]
+    
+    O --> P[Summarize Findings]
+    P --> Q{Research Complete?}
+    Q -->|No| R[Generate Follow-ups]
+    R --> L
+    Q -->|Yes| S[Consolidate Results]
+    
+    H --> S
+    S --> T[Cache Results]
+    T --> U{Output Format}
+    
+    U -->|Markdown| V[Format as Markdown]
+    U -->|JSON| W[Format as JSON]
+    U -->|Text| X[Format as Plain Text]
+    
+    V --> Y[Export/Display Results]
+    W --> Y
+    X --> Y
+    Y --> Z[End]
+    
+    E --> Z

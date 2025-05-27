@@ -1,0 +1,53 @@
+sequenceDiagram
+    participant User
+    participant CLI
+    participant ResearchEngine
+    participant PromptGenerator
+    participant PerplexityAPI
+    participant CacheManager
+    participant OutputFormatter
+
+    User->>CLI: Execute research command
+    activate CLI
+    
+    CLI->>ResearchEngine: Initialize research session
+    activate ResearchEngine
+    
+    ResearchEngine->>CacheManager: Check cache for query
+    activate CacheManager
+    CacheManager-->>ResearchEngine: Cache miss/hit
+    deactivate CacheManager
+    
+    alt Cache Miss
+        ResearchEngine->>PromptGenerator: Generate research prompts
+        activate PromptGenerator
+        PromptGenerator-->>ResearchEngine: Optimized prompts
+        deactivate PromptGenerator
+        
+        loop Research Iterations
+            ResearchEngine->>PerplexityAPI: Send research query
+            activate PerplexityAPI
+            PerplexityAPI-->>ResearchEngine: Search results
+            deactivate PerplexityAPI
+            
+            ResearchEngine->>ResearchEngine: Analyze & summarize
+            ResearchEngine->>PromptGenerator: Generate follow-up
+            PromptGenerator-->>ResearchEngine: Follow-up queries
+        end
+        
+        ResearchEngine->>CacheManager: Store results
+        activate CacheManager
+        CacheManager-->>ResearchEngine: Cached
+        deactivate CacheManager
+    end
+    
+    ResearchEngine->>OutputFormatter: Format final results
+    activate OutputFormatter
+    OutputFormatter-->>ResearchEngine: Formatted output
+    deactivate OutputFormatter
+    
+    ResearchEngine-->>CLI: Research complete
+    deactivate ResearchEngine
+    
+    CLI-->>User: Display results
+    deactivate CLI
